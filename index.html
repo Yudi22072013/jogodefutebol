@@ -44,7 +44,6 @@
         .stat-bar {
             transition: width 0.5s ease-out;
         }
-        /* Custom scrollbars */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -65,7 +64,7 @@
 
     <div id="app" class="max-w-6xl mx-auto min-h-screen flex flex-col shadow-2xl bg-gray-900 border-x border-gray-800">
 
-        <!-- HEADER BANNER (Shows during game) -->
+        <!-- HEADER BANNER -->
         <header id="game-header" class="hidden grass-pattern border-b border-emerald-800/50 p-4 sticky top-0 z-30 shadow-lg backdrop-blur-md bg-opacity-90">
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <!-- Player Info -->
@@ -85,9 +84,9 @@
                     </div>
                 </div>
 
-                <!-- Matchday Status / Energy / Money -->
-                <div class="flex items-center gap-4 sm:gap-6 text-sm">
-                    <!-- Energy -->
+                <!-- Energy, Money & Auto Save Indicator -->
+                <div class="flex flex-wrap items-center gap-3 sm:gap-5 text-sm">
+                    <!-- Energy Bar -->
                     <div class="bg-gray-900/80 px-3 py-1.5 rounded-lg border border-gray-800">
                         <div class="flex items-center justify-between gap-2 mb-1 text-xs">
                             <span class="text-gray-400"><i class="fa-solid fa-bolt text-yellow-400"></i> Energia:</span>
@@ -105,13 +104,13 @@
                         <p class="text-[10px] text-gray-500"><span id="hdr-wage">R$ 300</span>/semana</p>
                     </div>
 
-                    <!-- Cloud Save Status Badge -->
-                    <div id="save-status-badge" class="bg-gray-900/80 px-3 py-1.5 rounded-lg border border-gray-800 flex items-center gap-2 text-xs">
-                        <i id="save-icon" class="fa-solid fa-cloud text-emerald-400"></i>
-                        <span id="save-text" class="text-gray-300 font-medium">Salvo na Nuvem</span>
+                    <!-- Auto Save Badge -->
+                    <div id="save-status-badge" class="bg-gray-900/90 px-3 py-1.5 rounded-lg border border-emerald-500/40 flex items-center gap-2 text-xs shadow-md">
+                        <i id="save-icon" class="fa-solid fa-floppy-disk text-emerald-400 animate-pulse"></i>
+                        <span id="save-text" class="text-emerald-300 font-semibold">Auto-Save Ativo</span>
                     </div>
 
-                    <!-- Next match button CTA -->
+                    <!-- Quick Play Button -->
                     <button id="btn-quick-play" onclick="switchTab('match')" class="hidden md:flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-4 py-2 rounded-xl font-bold text-sm shadow-md transition transform hover:scale-105 active:scale-95">
                         <i class="fa-solid fa-play"></i> Próximo Jogo
                     </button>
@@ -126,6 +125,9 @@
                 <button onclick="switchTab('match')" class="tab-btn bg-gray-800 text-gray-300 hover:bg-gray-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 whitespace-nowrap" data-tab="match">
                     <i class="fa-solid fa-futbol text-emerald-400"></i> Jogar Partida
                 </button>
+                <button onclick="switchTab('league')" class="tab-btn bg-gray-800 text-gray-300 hover:bg-gray-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 whitespace-nowrap" data-tab="league">
+                    <i class="fa-solid fa-trophy text-yellow-400"></i> Liga & Rankings
+                </button>
                 <button onclick="switchTab('training')" class="tab-btn bg-gray-800 text-gray-300 hover:bg-gray-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 whitespace-nowrap" data-tab="training">
                     <i class="fa-solid fa-dumbbell text-amber-400"></i> Treino
                 </button>
@@ -136,15 +138,14 @@
                     <i class="fa-solid fa-house text-purple-400"></i> Estilo de Vida
                 </button>
                 <button onclick="switchTab('stats')" class="tab-btn bg-gray-800 text-gray-300 hover:bg-gray-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 whitespace-nowrap" data-tab="stats">
-                    <i class="fa-solid fa-trophy text-yellow-400"></i> Carreira
+                    <i class="fa-solid fa-medal text-amber-300"></i> Carreira
                 </button>
             </nav>
         </header>
 
-        <!-- MAIN CONTENT AREA -->
         <main class="flex-1 p-4 sm:p-6 relative">
 
-            <!-- Cloud Save Detection Banner -->
+            <!-- Cloud / Local Save Banner -->
             <div id="cloud-save-banner" class="hidden max-w-2xl mx-auto mb-6 bg-gradient-to-r from-emerald-950 to-teal-900 border border-emerald-500/60 rounded-2xl p-5 shadow-xl">
                 <div class="flex flex-wrap items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
@@ -171,7 +172,7 @@
                         <i class="fa-solid fa-trophy text-4xl text-amber-400"></i>
                     </div>
                     <h1 class="text-4xl sm:text-5xl font-teko font-bold text-white uppercase tracking-wider">Rumo ao Topo</h1>
-                    <p class="text-gray-400 text-sm">Crie seu jogador, comece na Série D e conquiste o mundo do futebol!</p>
+                    <p class="text-gray-400 text-sm">Crie seu jogador, comece na Série D e conquiste a artilharia e o futebol mundial!</p>
                 </div>
 
                 <form id="creation-form" onsubmit="initCareer(event)" class="bg-gray-800/80 border border-gray-700/80 rounded-2xl p-6 sm:p-8 shadow-xl space-y-6">
@@ -217,9 +218,7 @@
 
             <!-- SCREEN 1: DASHBOARD -->
             <section id="tab-dashboard" class="hidden space-y-6">
-                <!-- Top Status Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <!-- Overall Card -->
                     <div class="bg-gray-800/90 border border-gray-700 rounded-2xl p-5 flex items-center justify-between shadow-md">
                         <div>
                             <p class="text-xs uppercase font-bold text-gray-400">Nível do Jogador</p>
@@ -231,7 +230,6 @@
                         </div>
                     </div>
 
-                    <!-- Next Match Info -->
                     <div class="bg-gray-800/90 border border-gray-700 rounded-2xl p-5 shadow-md flex flex-col justify-between">
                         <div class="flex items-center justify-between">
                             <p class="text-xs uppercase font-bold text-gray-400">Próximo Desafio</p>
@@ -247,7 +245,6 @@
                         </button>
                     </div>
 
-                    <!-- Career Goal / Hype -->
                     <div class="bg-gray-800/90 border border-gray-700 rounded-2xl p-5 shadow-md flex flex-col justify-between">
                         <div class="flex items-center justify-between">
                             <p class="text-xs uppercase font-bold text-gray-400">Status na Mídia</p>
@@ -255,17 +252,16 @@
                         </div>
                         <div class="my-1">
                             <p id="dash-hype-level" class="font-bold text-amber-400 text-lg">Desconhecido</p>
-                            <p class="text-xs text-gray-400" id="dash-hype-sub">Mostre serviço em campo para chamar atenção de olheiros.</p>
+                            <p class="text-xs text-gray-400" id="dash-hype-sub">Brilhe com gols e assistências para liderar os ranks.</p>
                         </div>
                         <div class="text-xs text-emerald-300 flex items-center gap-1">
-                            <i class="fa-solid fa-trophy"></i> Meta: <span id="dash-season-goal">Chegar no G4 da Série D</span>
+                            <i class="fa-solid fa-trophy"></i> Meta: <span id="dash-season-goal">Lutar pelo Título & Artilharia</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Attributes & League Table Grid -->
+                <!-- Attributes & Leaderboard Quick View -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Attributes Detailed -->
                     <div class="bg-gray-800/80 border border-gray-700 rounded-2xl p-5 shadow-md space-y-4">
                         <div class="flex items-center justify-between border-b border-gray-700 pb-3">
                             <h3 class="font-bold text-white flex items-center gap-2">
@@ -279,27 +275,25 @@
                         </div>
                     </div>
 
-                    <!-- League Standings -->
                     <div class="bg-gray-800/80 border border-gray-700 rounded-2xl p-5 shadow-md space-y-4">
                         <div class="flex items-center justify-between border-b border-gray-700 pb-3">
                             <h3 class="font-bold text-white flex items-center gap-2">
-                                <i class="fa-solid fa-list-ol text-blue-400"></i> Tabela da <span id="dash-league-name">Série D</span>
+                                <i class="fa-solid fa-[#d4af37] fa-award text-amber-400"></i> Resumo da Artilharia
                             </h3>
-                            <span class="text-xs text-gray-400">Temporada <span id="dash-season-year">2026</span></span>
+                            <button onclick="switchTab('league')" class="text-xs text-amber-400 hover:underline">Ver Completo <i class="fa-solid fa-arrow-right"></i></button>
                         </div>
 
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs">
                                 <thead>
                                     <tr class="text-gray-400 border-b border-gray-700/60 pb-1">
-                                        <th class="py-2">#</th>
-                                        <th class="py-2">Time</th>
-                                        <th class="py-2 text-center">J</th>
-                                        <th class="py-2 text-center">V</th>
-                                        <th class="py-2 text-center">PTS</th>
+                                        <th class="py-2">Pos</th>
+                                        <th class="py-2">Jogador</th>
+                                        <th class="py-2">Clube</th>
+                                        <th class="py-2 text-center">Gols</th>
                                     </tr>
                                 </thead>
-                                <tbody id="league-standings-tbody" class="divide-y divide-gray-800">
+                                <tbody id="dash-top-scorers-preview" class="divide-y divide-gray-800">
                                     <!-- Injected -->
                                 </tbody>
                             </table>
@@ -308,7 +302,107 @@
                 </div>
             </section>
 
-            <!-- SCREEN 2: MATCH PLAY -->
+            <!-- SCREEN 2: LEAGUE STANDINGS & RANKINGS (ARTILHARIA & ASSISTÊNCIAS) -->
+            <section id="tab-league" class="hidden space-y-6">
+                <!-- Header Tabs for League View -->
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-trophy text-amber-400"></i> Campeonato & Estatísticas Solitárias
+                        </h2>
+                        <p class="text-xs text-gray-400">Acompanhe a Tabela da <span id="league-tab-div-name" class="text-emerald-400 font-bold">Série D</span>, a Artilharia e os Garçons de Assistências.</p>
+                    </div>
+
+                    <div class="flex gap-2 bg-gray-900 p-1 rounded-xl border border-gray-800">
+                        <button onclick="switchLeagueSubTab('standings')" id="subtab-btn-standings" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white transition">
+                            <i class="fa-solid fa-list-ol"></i> Tabela
+                        </button>
+                        <button onclick="switchLeagueSubTab('scorers')" id="subtab-btn-scorers" class="px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition">
+                            <i class="fa-solid fa-futbol text-emerald-400"></i> Rank Artilharia
+                        </button>
+                        <button onclick="switchLeagueSubTab('assists')" id="subtab-btn-assists" class="px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition">
+                            <i class="fa-solid fa-handshake text-blue-400"></i> Rank Assistências
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sub-Tab 1: Standings -->
+                <div id="league-sub-standings" class="bg-gray-800/80 border border-gray-700 rounded-2xl p-5 shadow-md">
+                    <h3 class="font-bold text-white mb-4 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-ranking-star text-amber-400"></i> Tabela de Classificação
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead>
+                                <tr class="text-gray-400 border-b border-gray-700 pb-2">
+                                    <th class="py-2 px-3">#</th>
+                                    <th class="py-2 px-3">Clube</th>
+                                    <th class="py-2 px-3 text-center">Jogos</th>
+                                    <th class="py-2 px-3 text-center">Vitórias</th>
+                                    <th class="py-2 px-3 text-center font-bold text-emerald-400">Pontos</th>
+                                </tr>
+                            </thead>
+                            <tbody id="full-league-standings-tbody" class="divide-y divide-gray-800">
+                                <!-- Injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Sub-Tab 2: Artilharia (Top Scorers) -->
+                <div id="league-sub-scorers" class="hidden bg-gray-800/80 border border-gray-700 rounded-2xl p-5 shadow-md space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-700 pb-3">
+                        <h3 class="font-bold text-white text-base flex items-center gap-2">
+                            <i class="fa-solid fa-futbol text-emerald-400"></i> Chuteira de Ouro - Rank de Artilharia
+                        </h3>
+                        <span class="text-xs text-amber-400 font-bold"><i class="fa-solid fa-crown"></i> Maior Artilheiro Ganha Bônus</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead>
+                                <tr class="text-gray-400 border-b border-gray-700 pb-2">
+                                    <th class="py-2 px-3">Pos</th>
+                                    <th class="py-2 px-3">Jogador</th>
+                                    <th class="py-2 px-3">Clube</th>
+                                    <th class="py-2 px-3 text-center font-bold text-emerald-400">Gols Marcados</th>
+                                </tr>
+                            </thead>
+                            <tbody id="full-top-scorers-tbody" class="divide-y divide-gray-800">
+                                <!-- Injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Sub-Tab 3: Assistências (Top Assist Providers) -->
+                <div id="league-sub-assists" class="hidden bg-gray-800/80 border border-gray-700 rounded-2xl p-5 shadow-md space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-700 pb-3">
+                        <h3 class="font-bold text-white text-base flex items-center gap-2">
+                            <i class="fa-solid fa-handshake text-blue-400"></i> Garçom da Temporada - Rank de Assistências
+                        </h3>
+                        <span class="text-xs text-blue-400 font-bold"><i class="fa-solid fa-wand-magic-sparkles"></i> Visão de Jogo Suprema</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead>
+                                <tr class="text-gray-400 border-b border-gray-700 pb-2">
+                                    <th class="py-2 px-3">Pos</th>
+                                    <th class="py-2 px-3">Jogador</th>
+                                    <th class="py-2 px-3">Clube</th>
+                                    <th class="py-2 px-3 text-center font-bold text-blue-400">Assistências</th>
+                                </tr>
+                            </thead>
+                            <tbody id="full-top-assists-tbody" class="divide-y divide-gray-800">
+                                <!-- Injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCREEN 3: MATCH PLAY -->
             <section id="tab-match" class="hidden space-y-6">
                 <!-- Stadium Top Banner -->
                 <div class="grass-pattern border border-emerald-700/60 rounded-2xl p-6 shadow-xl text-center relative overflow-hidden">
@@ -316,36 +410,29 @@
                         <span id="match-comp-title">Série D - Rodada 1</span>
                     </div>
 
-                    <!-- Scoreboard -->
                     <div class="flex items-center justify-center gap-6 my-4">
-                        <!-- Home Team -->
                         <div class="text-center w-1/3">
                             <h4 id="match-home-name" class="font-teko font-bold text-2xl sm:text-3xl text-white truncate">Sousa-PB</h4>
                             <p class="text-xs text-emerald-300">Mandante</p>
                         </div>
-                        <!-- Score Display -->
                         <div class="bg-gray-950/90 border border-emerald-500/50 rounded-xl px-5 py-2 flex items-center gap-3">
                             <span id="match-home-score" class="font-teko text-4xl sm:text-5xl font-bold text-white">0</span>
                             <span class="text-emerald-400 text-xl font-bold">:</span>
                             <span id="match-away-score" class="font-teko text-4xl sm:text-5xl font-bold text-white">0</span>
                         </div>
-                        <!-- Away Team -->
                         <div class="text-center w-1/3">
                             <h4 id="match-away-name" class="font-teko font-bold text-2xl sm:text-3xl text-white truncate">Retrô FC</h4>
                             <p class="text-xs text-gray-400">Visitante</p>
                         </div>
                     </div>
 
-                    <!-- Match Minute & Energy Status -->
                     <div class="flex items-center justify-center gap-4 text-xs font-bold text-gray-300">
                         <span class="bg-gray-900/80 px-3 py-1 rounded-full border border-gray-700" id="match-minute">0'</span>
                         <span class="bg-gray-900/80 px-3 py-1 rounded-full border border-gray-700" id="match-rating">Nota: 6.0</span>
                     </div>
                 </div>
 
-                <!-- Match Feed & Event Area -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Live Event Playbook -->
                     <div class="lg:col-span-2 bg-gray-800/90 border border-gray-700 rounded-2xl p-6 shadow-md flex flex-col justify-between min-h-[340px]">
                         <div>
                             <div class="flex items-center justify-between border-b border-gray-700 pb-3 mb-4">
@@ -363,13 +450,11 @@
                                 </div>
                             </div>
 
-                            <!-- Commentary Log Box -->
                             <div id="match-log" class="bg-gray-900/90 rounded-xl p-4 h-48 overflow-y-auto space-y-2 text-xs sm:text-sm font-mono border border-gray-800">
                                 <p class="text-gray-500 italic">Clique em "Iniciar Partida" para dar a saída...</p>
                             </div>
                         </div>
 
-                        <!-- Match Controls -->
                         <div class="mt-4 pt-4 border-t border-gray-700 flex flex-wrap gap-3 items-center justify-between">
                             <button id="btn-start-match" onclick="startMatchSimulation()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold px-6 py-3 rounded-xl text-sm shadow-md transition transform active:scale-95 flex items-center gap-2">
                                 <i class="fa-solid fa-whistle"></i> Iniciar Partida
@@ -378,12 +463,11 @@
                                 Simular Restante
                             </button>
                             <button id="btn-finish-match" onclick="finishMatch()" class="hidden bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold px-6 py-3 rounded-xl text-sm transition">
-                                Finalizar & Receber Salário <i class="fa-solid fa-check"></i>
+                                Finalizar & Salvar Automático <i class="fa-solid fa-check"></i>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Personal Performance Stats in Match -->
                     <div class="bg-gray-800/90 border border-gray-700 rounded-2xl p-6 shadow-md space-y-4">
                         <h3 class="font-bold text-white border-b border-gray-700 pb-3 flex items-center gap-2">
                             <i class="fa-solid fa-user-ninja text-emerald-400"></i> Desempenho Pessoal
@@ -409,14 +493,14 @@
                         </div>
 
                         <div class="bg-emerald-950/40 border border-emerald-800/40 rounded-xl p-3 text-xs text-emerald-300">
-                            <p class="font-semibold mb-1"><i class="fa-solid fa-lightbulb"></i> Dica do Técnico:</p>
-                            <p id="tactical-tip" class="text-gray-300">Mantenha a calma na hora de definir. Atributos altos aumentam a chance de acerto em lances decisivos.</p>
+                            <p class="font-semibold mb-1"><i class="fa-solid fa-lightbulb"></i> Dica de Artilharia:</p>
+                            <p id="tactical-tip" class="text-gray-300">Marcar gols e dar assistências eleva sua posição nos ranks da liga e desbloqueia prêmios no final da temporada.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- SCREEN 3: TRAINING -->
+            <!-- SCREEN 4: TRAINING -->
             <section id="tab-training" class="hidden space-y-6">
                 <div class="bg-gray-800/80 border border-gray-700 rounded-2xl p-6 shadow-md">
                     <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
@@ -424,21 +508,20 @@
                             <h2 class="text-2xl font-bold text-white flex items-center gap-2">
                                 <i class="fa-solid fa-dumbbell text-amber-400"></i> Centro de Treinamento
                             </h2>
-                            <p class="text-xs text-gray-400">Gaste energia para evoluir seus atributos técnicos e físicos.</p>
+                            <p class="text-xs text-gray-400">Gaste energia para evoluir seus atributos técnicos e físicos (Auto-salvo ao treinar).</p>
                         </div>
                         <button onclick="restPlayer()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 transition">
                             <i class="fa-solid fa-bed"></i> Descansar (Recupera Energia +50%)
                         </button>
                     </div>
 
-                    <!-- Training Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="training-options-grid">
                         <!-- Dynamic Training Modules -->
                     </div>
                 </div>
             </section>
 
-            <!-- SCREEN 4: TRANSFERS -->
+            <!-- SCREEN 5: TRANSFERS -->
             <section id="tab-transfers" class="hidden space-y-6">
                 <div class="bg-gray-800/80 border border-gray-700 rounded-2xl p-6 shadow-md">
                     <div class="border-b border-gray-700 pb-4 mb-6 flex flex-wrap justify-between items-center gap-2">
@@ -446,7 +529,7 @@
                             <h2 class="text-2xl font-bold text-white flex items-center gap-2">
                                 <i class="fa-solid fa-handshake text-blue-400"></i> Mercado de Transferências
                             </h2>
-                            <p class="text-xs text-gray-400">Propostas de novos clubes dependem da sua média de atuação e do seu OVR.</p>
+                            <p class="text-xs text-gray-400">Propostas de novos clubes dependem da sua média de atuação e artilharia.</p>
                         </div>
                         <div class="text-xs text-gray-300 bg-gray-900 px-3 py-1.5 rounded-lg border border-gray-700">
                             Sua Reputação: <span id="reputation-badge" class="font-bold text-emerald-400">Local (Série D)</span>
@@ -459,15 +542,15 @@
                 </div>
             </section>
 
-            <!-- SCREEN 5: LIFESTYLE & INVESTMENTS -->
+            <!-- SCREEN 6: LIFESTYLE & INVESTMENTS -->
             <section id="tab-lifestyle" class="hidden space-y-6">
                 <div class="bg-gray-800/80 border border-gray-700 rounded-2xl p-6 shadow-md space-y-6">
                     <div class="border-b border-gray-700 pb-4 flex items-center justify-between">
                         <div>
                             <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-                                <i class="fa-solid fa-house text-purple-400"></i> Estilo de Vida & Investimentos
+                                <i class="fa-solid fa-house text-purple-400"></i> Estilo de Vida & Luxos
                             </h2>
-                            <p class="text-xs text-gray-400">Compre luxos, melhore sua visibilidade com empresários e garanta renda passiva.</p>
+                            <p class="text-xs text-gray-400">Compre luxos e melhore sua visibilidade com patrocinadores.</p>
                         </div>
                         <div class="text-right">
                             <span class="text-xs text-gray-400">Patrimônio Líquido</span>
@@ -475,16 +558,14 @@
                         </div>
                     </div>
 
-                    <!-- Lifestyle Items Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="lifestyle-items-grid">
                         <!-- Dynamic Lifestyle items -->
                     </div>
                 </div>
             </section>
 
-            <!-- SCREEN 6: CAREER STATS & WORLD CUP -->
+            <!-- SCREEN 7: CAREER STATS & WORLD CUP -->
             <section id="tab-stats" class="hidden space-y-6">
-                <!-- National Team & World Cup Status -->
                 <div class="bg-gradient-to-r from-yellow-950 via-green-950 to-blue-950 border border-yellow-500/40 rounded-2xl p-6 shadow-xl gold-border">
                     <div class="flex flex-wrap items-center justify-between gap-4">
                         <div class="flex items-center gap-4">
@@ -493,7 +574,7 @@
                             </div>
                             <div>
                                 <h3 class="text-2xl font-teko font-bold text-yellow-400 uppercase tracking-wide">Seleção Nacional & Copa do Mundo</h3>
-                                <p class="text-xs text-gray-300" id="national-team-status">Você ainda precisa atingir OVR 75+ e jogar na Série A ou Europa para ser convocado.</p>
+                                <p class="text-xs text-gray-300" id="national-team-status">Você precisa atingir OVR 75+ para ser convocado para a Seleção.</p>
                             </div>
                         </div>
                         <div class="text-right">
@@ -504,10 +585,9 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Overall Stats Box -->
                     <div class="bg-gray-800/80 border border-gray-700 rounded-2xl p-5 shadow-md space-y-4">
                         <h3 class="font-bold text-white border-b border-gray-700 pb-3 flex items-center gap-2">
-                            <i class="fa-solid fa-chart-pie text-emerald-400"></i> Histórico da Carreira
+                            <i class="fa-solid fa-chart-pie text-emerald-400"></i> Histórico Geral da Carreira
                         </h3>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-center">
                             <div class="bg-gray-900 p-3 rounded-xl border border-gray-800">
@@ -537,10 +617,9 @@
                         </div>
                     </div>
 
-                    <!-- Trophy Cabinet -->
                     <div class="bg-gray-800/80 border border-gray-700 rounded-2xl p-5 shadow-md space-y-4">
                         <h3 class="font-bold text-white border-b border-gray-700 pb-3 flex items-center gap-2">
-                            <i class="fa-solid fa-award text-yellow-400"></i> Galeria de Troféus
+                            <i class="fa-solid fa-award text-yellow-400"></i> Galeria de Troféus & Prêmios
                         </h3>
                         <div id="trophy-cabinet" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             <!-- Populated dynamically -->
@@ -550,11 +629,9 @@
             </section>
         </main>
 
-        <!-- FOOTER / NOTIFICATION MODAL -->
-        <!-- Toast Notification Container -->
+        <!-- TOAST & MODAL UI -->
         <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
 
-        <!-- Dynamic Game Dialog Modal -->
         <div id="modal-overlay" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div id="modal-box" class="bg-gray-900 border border-emerald-500/50 rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4">
                 <h3 id="modal-title" class="text-xl font-bold text-white flex items-center gap-2">Título do Evento</h3>
@@ -573,7 +650,6 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase Cloud Save setup
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'carreira-futebol-default';
         let db = null;
         let auth = null;
@@ -581,7 +657,7 @@
         let isCloudActive = false;
         let pendingLoadedPlayer = null;
 
-        /* SOUND SYNTHESIZER (Web Audio API) */
+        /* SOUND SYNTHESIZER */
         const AudioEngine = {
             ctx: null,
             init() {
@@ -641,7 +717,7 @@
             }
         };
 
-        // Game Databases & Definitions
+        // Game Databases
         const DIVISIONS = {
             SERIE_D: { name: 'Série D', rank: 1, minOvr: 50, wageMultiplier: 1, maxGames: 12 },
             SERIE_C: { name: 'Série C', rank: 2, minOvr: 62, wageMultiplier: 3, maxGames: 14 },
@@ -652,49 +728,90 @@
 
         const CLUBS_DATABASE = [
             // Série D
-            { id: 'sousa', name: 'Sousa-PB', div: 'SERIE_D', ovr: 55, color: 'bg-green-700' },
-            { id: 'retro', name: 'Retrô FC', div: 'SERIE_D', ovr: 57, color: 'bg-yellow-600' },
-            { id: 'caxias', name: 'Caxias', div: 'SERIE_D', ovr: 58, color: 'bg-red-700' },
-            { id: 'trem', name: 'Trem-AP', div: 'SERIE_D', ovr: 54, color: 'bg-gray-700' },
-            { id: 'manaus', name: 'Manaus FC', div: 'SERIE_D', ovr: 56, color: 'bg-emerald-600' },
+            { id: 'sousa', name: 'Sousa-PB', div: 'SERIE_D', ovr: 55 },
+            { id: 'retro', name: 'Retrô FC', div: 'SERIE_D', ovr: 57 },
+            { id: 'caxias', name: 'Caxias', div: 'SERIE_D', ovr: 58 },
+            { id: 'trem', name: 'Trem-AP', div: 'SERIE_D', ovr: 54 },
+            { id: 'manaus', name: 'Manaus FC', div: 'SERIE_D', ovr: 56 },
 
             // Série C
-            { id: 'paysandu', name: 'Paysandu', div: 'SERIE_C', ovr: 63, color: 'bg-sky-600' },
-            { id: 'fiqueirense', name: 'Figueirense', div: 'SERIE_C', ovr: 64, color: 'bg-black' },
-            { id: 'nautico', name: 'Náutico', div: 'SERIE_C', ovr: 65, color: 'bg-red-600' },
-            { id: 'operario', name: 'Operário-PR', div: 'SERIE_C', ovr: 63, color: 'bg-gray-800' },
+            { id: 'paysandu', name: 'Paysandu', div: 'SERIE_C', ovr: 63 },
+            { id: 'figueirense', name: 'Figueirense', div: 'SERIE_C', ovr: 64 },
+            { id: 'nautico', name: 'Náutico', div: 'SERIE_C', ovr: 65 },
+            { id: 'operario', name: 'Operário-PR', div: 'SERIE_C', ovr: 63 },
 
             // Série B
-            { id: 'santos', name: 'Santos FC', div: 'SERIE_B', ovr: 72, color: 'bg-gray-100 text-gray-900' },
-            { id: 'sport', name: 'Sport Recife', div: 'SERIE_B', ovr: 71, color: 'bg-red-800' },
-            { id: 'ceara', name: 'Ceará SC', div: 'SERIE_B', ovr: 70, color: 'bg-black' },
-            { id: 'coritiba', name: 'Coritiba', div: 'SERIE_B', ovr: 71, color: 'bg-emerald-800' },
+            { id: 'santos', name: 'Santos FC', div: 'SERIE_B', ovr: 72 },
+            { id: 'sport', name: 'Sport Recife', div: 'SERIE_B', ovr: 71 },
+            { id: 'ceara', name: 'Ceará SC', div: 'SERIE_B', ovr: 70 },
+            { id: 'coritiba', name: 'Coritiba', div: 'SERIE_B', ovr: 71 },
 
             // Série A
-            { id: 'flamengo', name: 'Flamengo', div: 'SERIE_A', ovr: 81, color: 'bg-red-600' },
-            { id: 'palmeiras', name: 'Palmeiras', div: 'SERIE_A', ovr: 82, color: 'bg-emerald-700' },
-            { id: 'atletico', name: 'Atlético Mineiro', div: 'SERIE_A', ovr: 79, color: 'bg-gray-900' },
-            { id: 'sao_paulo', name: 'São Paulo FC', div: 'SERIE_A', ovr: 78, color: 'bg-red-700' },
-            { id: 'gremio', name: 'Grêmio', div: 'SERIE_A', ovr: 78, color: 'bg-blue-600' },
+            { id: 'flamengo', name: 'Flamengo', div: 'SERIE_A', ovr: 81 },
+            { id: 'palmeiras', name: 'Palmeiras', div: 'SERIE_A', ovr: 82 },
+            { id: 'atletico', name: 'Atlético Mineiro', div: 'SERIE_A', ovr: 79 },
+            { id: 'sao_paulo', name: 'São Paulo FC', div: 'SERIE_A', ovr: 78 },
+            { id: 'gremio', name: 'Grêmio', div: 'SERIE_A', ovr: 78 },
 
             // Elite Europeia
-            { id: 'real_madrid', name: 'Real Madrid', div: 'EUROPE', ovr: 89, color: 'bg-amber-100 text-gray-900' },
-            { id: 'man_city', name: 'Manchester City', div: 'EUROPE', ovr: 90, color: 'bg-sky-400 text-gray-950' },
-            { id: 'barcelona', name: 'FC Barcelona', div: 'EUROPE', ovr: 88, color: 'bg-blue-800' },
-            { id: 'bayern', name: 'Bayern München', div: 'EUROPE', ovr: 88, color: 'bg-red-600' },
-            { id: 'psg', name: 'Paris Saint-Germain', div: 'EUROPE', ovr: 87, color: 'bg-blue-900' }
+            { id: 'real_madrid', name: 'Real Madrid', div: 'EUROPE', ovr: 89 },
+            { id: 'man_city', name: 'Manchester City', div: 'EUROPE', ovr: 90 },
+            { id: 'barcelona', name: 'FC Barcelona', div: 'EUROPE', ovr: 88 },
+            { id: 'bayern', name: 'Bayern München', div: 'EUROPE', ovr: 88 },
+            { id: 'psg', name: 'Paris Saint-Germain', div: 'EUROPE', ovr: 87 }
         ];
+
+        // NPC Players for Artilharia and Assistencias per Division
+        const NPC_PLAYERS_DB = {
+            SERIE_D: [
+                { name: 'Luizão Matador', clubId: 'retro' },
+                { name: 'Pedrinho Mágico', clubId: 'caxias' },
+                { name: 'Tiquinho do Sertão', clubId: 'sousa' },
+                { name: 'Giba Flecha', clubId: 'manaus' },
+                { name: 'Nico Canhão', clubId: 'trem' },
+                { name: 'Paulinho Passe', clubId: 'retro' }
+            ],
+            SERIE_C: [
+                { name: 'Kieza', clubId: 'nautico' },
+                { name: 'Nicolas', clubId: 'paysandu' },
+                { name: 'Léo Artur', clubId: 'figueirense' },
+                { name: 'Felipe Augusto', clubId: 'operario' },
+                { name: 'Jean Silva', clubId: 'nautico' }
+            ],
+            SERIE_B: [
+                { name: 'Guilherme', clubId: 'santos' },
+                { name: 'Gustavo Coutinho', clubId: 'sport' },
+                { name: 'Erick Pulga', clubId: 'ceara' },
+                { name: 'Robson', clubId: 'coritiba' },
+                { name: 'Furch', clubId: 'santos' }
+            ],
+            SERIE_A: [
+                { name: 'Pedro', clubId: 'flamengo' },
+                { name: 'Veiga', clubId: 'palmeiras' },
+                { name: 'Hulk', clubId: 'atletico' },
+                { name: 'Calleri', clubId: 'sao_paulo' },
+                { name: 'Diego Costa', clubId: 'gremio' },
+                { name: 'De Arrascaeta', clubId: 'flamengo' }
+            ],
+            EUROPE: [
+                { name: 'Kylian Mbappé', clubId: 'real_madrid' },
+                { name: 'Erling Haaland', clubId: 'man_city' },
+                { name: 'Robert Lewandowski', clubId: 'barcelona' },
+                { name: 'Harry Kane', clubId: 'bayern' },
+                { name: 'Vinicius Jr', clubId: 'real_madrid' },
+                { name: 'Kevin De Bruyne', clubId: 'man_city' }
+            ]
+        };
 
         const LIFESTYLE_CATALOG = [
-            { id: 'boots', name: 'Chuteira Profissional High-Tech', cost: 1500, ovrBonus: 1, desc: '+1 Finalização & Drible', icon: 'fa-shoe-prints', bought: false },
-            { id: 'personal', name: 'Personal Trainer Exclusivo', cost: 8000, ovrBonus: 2, desc: '+2 Físico & Recupera mais energia', icon: 'fa-heart-pulse', bought: false },
-            { id: 'car', name: 'Carro Esportivo de Luxo', cost: 45000, ovrBonus: 0, desc: '+30% Mídia & Hype', icon: 'fa-car', bought: false },
-            { id: 'agent', name: 'Empresário Internacional', cost: 120000, ovrBonus: 0, desc: 'Aumenta ofertas de clubes da Série A/Europa', icon: 'fa-user-tie', bought: false },
-            { id: 'mansion', name: 'Mansão com Campo Privado', cost: 500000, ovrBonus: 2, desc: 'Renda passiva + Conforto de treino', icon: 'fa-building-columns', bought: false },
-            { id: 'jet', name: 'Jatinho Particular', cost: 2500000, ovrBonus: 0, desc: 'Status global máximo para a mídia', icon: 'fa-plane', bought: false }
+            { id: 'boots', name: 'Chuteira Profissional High-Tech', cost: 1500, ovrBonus: 1, desc: '+1 Finalização & Drible', icon: 'fa-shoe-prints' },
+            { id: 'personal', name: 'Personal Trainer Exclusivo', cost: 8000, ovrBonus: 2, desc: '+2 Físico & Recupera mais energia', icon: 'fa-heart-pulse' },
+            { id: 'car', name: 'Carro Esportivo de Luxo', cost: 45000, ovrBonus: 0, desc: '+30% Mídia & Hype', icon: 'fa-car' },
+            { id: 'agent', name: 'Empresário Internacional', cost: 120000, ovrBonus: 0, desc: 'Aumenta ofertas de clubes da Série A/Europa', icon: 'fa-user-tie' },
+            { id: 'mansion', name: 'Mansão com Campo Privado', cost: 500000, ovrBonus: 2, desc: 'Renda passiva + Conforto de treino', icon: 'fa-building-columns' },
+            { id: 'jet', name: 'Jatinho Particular', cost: 2500000, ovrBonus: 0, desc: 'Status global máximo para a mídia', icon: 'fa-plane' }
         ];
 
-        // Player Career Data State
         let player = {
             name: '',
             position: 'ATA',
@@ -708,6 +825,8 @@
             clubId: 'sousa',
             division: 'SERIE_D',
             seasonMatchIndex: 1,
+            seasonGoals: 0,
+            seasonAssists: 0,
             stats: {
                 shooting: 62,
                 passing: 55,
@@ -724,18 +843,15 @@
                 wcGoals: 0,
                 totalEarnings: 1200
             },
-            nationalTeamCall: false,
             transferOffers: [],
             lifestyleOwned: [],
-            mediaHype: 'Local',
-            standings: []
+            standings: [],
+            leagueNpcStats: [] // NPC scorers and assist leaders
         };
 
-        // Current Active Match State
         let currentMatch = null;
 
         async function initCloudSave() {
-            // Primeiro checa por save salvo localmente no navegador
             checkLocalStorageSave();
 
             try {
@@ -768,25 +884,24 @@
             }
         }
 
+        // Automatic Saving Function
         async function autoSaveGame() {
             if (!player || !player.name) return;
 
-            // 1. Sempre salva no localStorage do navegador (garantia offline/local)
+            updateSaveBadge('saving');
+
+            // 1. LocalStorage auto-save
             try {
                 localStorage.setItem('carreira_futebol_save', JSON.stringify({
                     playerData: JSON.stringify(player),
                     savedAt: new Date().toISOString()
                 }));
-                if (!isCloudActive) {
-                    updateSaveBadge('saved_local');
-                }
             } catch (err) {
                 console.error("Erro ao salvar localmente:", err);
             }
 
-            // 2. Tenta salvar na nuvem se o Firebase estiver ativo
+            // 2. Firestore Cloud auto-save if online
             if (isCloudActive && currentUser && db) {
-                updateSaveBadge('saving');
                 try {
                     const saveDoc = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'careerData', 'playerState');
                     await setDoc(saveDoc, {
@@ -796,8 +911,10 @@
                     updateSaveBadge('saved');
                 } catch (err) {
                     console.error("Erro ao salvar na nuvem:", err);
-                    updateSaveBadge('error');
+                    updateSaveBadge('saved_local');
                 }
+            } else {
+                updateSaveBadge('saved_local');
             }
         }
 
@@ -811,7 +928,7 @@
                         const club = getClub(pendingLoadedPlayer.clubId);
 
                         document.getElementById('save-banner-info').innerText = 
-                            `${pendingLoadedPlayer.name} (${club.name}) - OVR ${pendingLoadedPlayer.ovr} - Temp. ${pendingLoadedPlayer.year} (Salvo no Navegador)`;
+                            `${pendingLoadedPlayer.name} (${club.name}) - OVR ${pendingLoadedPlayer.ovr} - Temp. ${pendingLoadedPlayer.year} (Gols: ${pendingLoadedPlayer.seasonGoals || 0})`;
                         document.getElementById('cloud-save-banner').classList.remove('hidden');
                     }
                 }
@@ -848,6 +965,12 @@
             AudioEngine.playClick();
 
             player = pendingLoadedPlayer;
+            if (!player.seasonGoals) player.seasonGoals = 0;
+            if (!player.seasonAssists) player.seasonAssists = 0;
+            if (!player.leagueNpcStats || player.leagueNpcStats.length === 0) {
+                generateLeagueNpcStats();
+            }
+
             calculateOverall();
 
             document.getElementById('cloud-save-banner').classList.add('hidden');
@@ -856,7 +979,7 @@
 
             updateUI();
             switchTab('dashboard');
-            showToast("Progresso carregado com sucesso!");
+            showToast("Progresso carregado e salvamento automático ativado!");
         }
 
         function updateSaveBadge(status) {
@@ -865,22 +988,19 @@
 
             if (status === 'saving') {
                 icon.className = "fa-solid fa-arrows-rotate text-yellow-400 animate-spin";
-                text.innerText = "Salvando...";
+                text.innerText = "Auto-Salvando...";
             } else if (status === 'saved') {
                 icon.className = "fa-solid fa-cloud-check text-emerald-400";
                 text.innerText = "Salvo na Nuvem";
             } else if (status === 'saved_local') {
                 icon.className = "fa-solid fa-hard-drive text-emerald-400";
-                text.innerText = "Salvo Localmente";
+                text.innerText = "Salvo no Navegador";
             } else if (status === 'ready') {
-                icon.className = "fa-solid fa-cloud text-emerald-400";
-                text.innerText = "Auto-save Ativo";
-            } else if (status === 'error') {
-                icon.className = "fa-solid fa-cloud-exclamation text-red-400";
-                text.innerText = "Erro ao Salvar";
+                icon.className = "fa-solid fa-floppy-disk text-emerald-400 animate-pulse";
+                text.innerText = "Auto-Save Ativo";
             } else {
-                icon.className = "fa-solid fa-hard-drive text-emerald-400";
-                text.innerText = "Modo Local (Salvo)";
+                icon.className = "fa-solid fa-floppy-disk text-emerald-400";
+                text.innerText = "Salvo Automaticamente";
             }
         }
 
@@ -915,21 +1035,20 @@
             const selectedClubId = document.querySelector('input[name="start_club"]:checked').value;
             player.clubId = selectedClubId;
 
-            // Apply position specific base stats
             if(player.position === 'ATA') {
                 player.stats = { shooting: 66, passing: 52, dribbling: 62, pace: 64, physical: 60, vision: 54 };
             } else if(player.position === 'MEI') {
                 player.stats = { shooting: 58, passing: 66, dribbling: 62, pace: 58, physical: 55, vision: 66 };
             } else if(player.position === 'PON') {
                 player.stats = { shooting: 60, passing: 56, dribbling: 68, pace: 70, physical: 52, vision: 56 };
-            } else { // ZAG
+            } else {
                 player.stats = { shooting: 42, passing: 55, dribbling: 50, pace: 58, physical: 70, vision: 58 };
             }
 
             calculateOverall();
             generateLeagueStandings();
+            generateLeagueNpcStats();
 
-            // Hide creation screen & show header/tabs
             document.getElementById('screen-creation').classList.add('hidden');
             document.getElementById('cloud-save-banner').classList.add('hidden');
             document.getElementById('game-header').classList.remove('hidden');
@@ -938,7 +1057,7 @@
             switchTab('dashboard');
             autoSaveGame();
 
-            showModal("Bem-vindo ao Futebol Profissional!", `Sua jornada começou no <b>${getClub(player.clubId).name}</b> na <b>Série D</b>. Treine forte, faça gols nas partidas e suba os degraus até a Seleção e a Copa do Mundo! <br><br>💾 <i>Seu jogo será salvo automaticamente a cada ação!</i>`);
+            showModal("Contrato Assinado!", `Bem-vindo ao <b>${getClub(player.clubId).name}</b>! A temporada da <b>Série D</b> vai começar. Dê o seu melhor em campo para conquistar o título e figurar no topo da <b>Artilharia</b> e do <b>Rank de Assistências</b>!<br><br>💾 <i>Seu progresso é salvo automaticamente a cada ação!</i>`);
         }
 
         function calculateOverall() {
@@ -964,12 +1083,10 @@
                 pts: 0
             }));
 
-            // Assign initial random points
             player.standings.forEach(st => {
                 st.pts = st.wins * 3 + Math.floor(Math.random() * 2);
             });
 
-            // Ensure player club is present
             if (!player.standings.some(s => s.id === player.clubId)) {
                 player.standings.push({
                     id: player.clubId,
@@ -986,9 +1103,34 @@
             player.standings.sort((a, b) => b.pts - a.pts || b.wins - a.wins);
         }
 
+        function generateLeagueNpcStats() {
+            const npcs = NPC_PLAYERS_DB[player.division] || NPC_PLAYERS_DB.SERIE_D;
+            player.leagueNpcStats = npcs.map(npc => ({
+                name: npc.name,
+                clubId: npc.clubId,
+                goals: Math.floor(Math.random() * (player.seasonMatchIndex * 0.8)),
+                assists: Math.floor(Math.random() * (player.seasonMatchIndex * 0.6))
+            }));
+        }
+
+        function simulateNpcRoundStats() {
+            if (!player.leagueNpcStats || player.leagueNpcStats.length === 0) {
+                generateLeagueNpcStats();
+            }
+
+            player.leagueNpcStats.forEach(npc => {
+                if (Math.random() > 0.4) {
+                    npc.goals += Math.floor(Math.random() * 2);
+                }
+                if (Math.random() > 0.5) {
+                    npc.assists += Math.floor(Math.random() * 2);
+                }
+            });
+        }
+
         function switchTab(tabName) {
             AudioEngine.playClick();
-            const tabs = ['dashboard', 'match', 'training', 'transfers', 'lifestyle', 'stats'];
+            const tabs = ['dashboard', 'match', 'league', 'training', 'transfers', 'lifestyle', 'stats'];
             tabs.forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 if (el) el.classList.add('hidden');
@@ -1008,16 +1150,38 @@
 
             if (tabName === 'dashboard') renderDashboard();
             if (tabName === 'match') prepareMatchView();
+            if (tabName === 'league') renderLeagueTab();
             if (tabName === 'training') renderTraining();
             if (tabName === 'transfers') renderTransfers();
             if (tabName === 'lifestyle') renderLifestyle();
             if (tabName === 'stats') renderStats();
         }
 
+        function switchLeagueSubTab(subTabName) {
+            AudioEngine.playClick();
+            document.getElementById('league-sub-standings').classList.add('hidden');
+            document.getElementById('league-sub-scorers').classList.add('hidden');
+            document.getElementById('league-sub-assists').classList.add('hidden');
+
+            document.getElementById('subtab-btn-standings').className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
+            document.getElementById('subtab-btn-scorers').className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
+            document.getElementById('subtab-btn-assists').className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
+
+            if (subTabName === 'standings') {
+                document.getElementById('league-sub-standings').classList.remove('hidden');
+                document.getElementById('subtab-btn-standings').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white transition";
+            } else if (subTabName === 'scorers') {
+                document.getElementById('league-sub-scorers').classList.remove('hidden');
+                document.getElementById('subtab-btn-scorers').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white transition";
+            } else if (subTabName === 'assists') {
+                document.getElementById('league-sub-assists').classList.remove('hidden');
+                document.getElementById('subtab-btn-assists').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white transition";
+            }
+        }
+
         function updateUI() {
             calculateOverall();
 
-            // Header Elements
             document.getElementById('hdr-ovr').innerText = player.ovr;
             document.getElementById('hdr-pos').innerText = player.position;
             document.getElementById('hdr-name').innerText = player.name;
@@ -1046,7 +1210,6 @@
             document.getElementById('dash-ovr-title').innerText = `OVR ${player.ovr}`;
             document.getElementById('dash-ovr-num').innerText = player.ovr;
 
-            // Status description
             if (player.ovr < 65) document.getElementById('dash-ovr-desc').innerText = "Promessa da Divisão de Acesso";
             else if (player.ovr < 75) document.getElementById('dash-ovr-desc').innerText = "Jogador Consolidado Nacional";
             else if (player.ovr < 85) document.getElementById('dash-ovr-desc').innerText = "Astro Titular da Série A";
@@ -1055,15 +1218,11 @@
             document.getElementById('dash-match-round').innerText = `Rodada ${player.seasonMatchIndex}/${div.maxGames}`;
             document.getElementById('dash-home-team').innerText = getClub(player.clubId).name;
 
-            // Find an opponent
             const otherClubs = CLUBS_DATABASE.filter(c => c.div === player.division && c.id !== player.clubId);
             const opponent = otherClubs[player.seasonMatchIndex % otherClubs.length] || otherClubs[0];
             document.getElementById('dash-away-team').innerText = opponent.name;
 
-            document.getElementById('dash-league-name').innerText = div.name;
-            document.getElementById('dash-season-year').innerText = player.year;
-
-            // Render Attributes Bars
+            // Render Attributes
             const attrContainer = document.getElementById('attributes-list-dash');
             const labels = {
                 shooting: { title: 'Finalização (CHUT)', icon: 'fa-crosshair', val: player.stats.shooting, color: 'bg-red-500' },
@@ -1089,19 +1248,90 @@
                 `;
             }).join('');
 
-            // Render League Standings
+            // Render Preview Top Scorers on Dashboard
+            const allScorers = getSortedScorers();
+            const topPreview = allScorers.slice(0, 4);
+            const previewTbody = document.getElementById('dash-top-scorers-preview');
+            previewTbody.innerHTML = topPreview.map((sc, idx) => `
+                <tr class="${sc.isUser ? 'bg-emerald-950/80 font-bold text-emerald-300' : 'text-gray-300'}">
+                    <td class="py-2 px-1">${idx + 1}º</td>
+                    <td class="py-2 px-1 flex items-center gap-1.5">
+                        ${sc.isUser ? '⭐ ' : ''}${sc.name}
+                    </td>
+                    <td class="py-2 px-1 text-gray-400">${getClub(sc.clubId).name}</td>
+                    <td class="py-2 px-1 text-center font-bold text-emerald-400">${sc.goals}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Helper to compile and sort scorers (User + NPCs)
+        function getSortedScorers() {
+            const list = [...(player.leagueNpcStats || [])];
+            list.push({
+                name: `${player.name} (Você)`,
+                clubId: player.clubId,
+                goals: player.seasonGoals || 0,
+                isUser: true
+            });
+            list.sort((a, b) => b.goals - a.goals);
+            return list;
+        }
+
+        // Helper to compile and sort assists (User + NPCs)
+        function getSortedAssists() {
+            const list = [...(player.leagueNpcStats || [])];
+            list.push({
+                name: `${player.name} (Você)`,
+                clubId: player.clubId,
+                assists: player.seasonAssists || 0,
+                isUser: true
+            });
+            list.sort((a, b) => b.assists - a.assists);
+            return list;
+        }
+
+        function renderLeagueTab() {
+            updateUI();
+            const div = getDivision(player.division);
+            document.getElementById('league-tab-div-name').innerText = div.name;
+
+            // Render Full Standings
             sortStandings();
-            const tbody = document.getElementById('league-standings-tbody');
-            tbody.innerHTML = player.standings.map((st, idx) => `
-                <tr class="${st.id === player.clubId ? 'bg-emerald-950/70 font-bold text-emerald-300' : 'text-gray-300'}">
-                    <td class="py-2">${idx + 1}º</td>
-                    <td class="py-2 flex items-center gap-2">
-                        <i class="fa-solid fa-shield-halved text-xs ${st.id === player.clubId ? 'text-emerald-400' : 'text-gray-500'}"></i>
+            const standingsTbody = document.getElementById('full-league-standings-tbody');
+            standingsTbody.innerHTML = player.standings.map((st, idx) => `
+                <tr class="${st.id === player.clubId ? 'bg-emerald-950/80 font-bold text-emerald-300' : 'text-gray-300'}">
+                    <td class="py-3 px-3">${idx + 1}º</td>
+                    <td class="py-3 px-3 flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved ${st.id === player.clubId ? 'text-emerald-400' : 'text-gray-500'}"></i>
                         ${st.name}
                     </td>
-                    <td class="py-2 text-center">${st.played}</td>
-                    <td class="py-2 text-center">${st.wins}</td>
-                    <td class="py-2 text-center font-bold">${st.pts}</td>
+                    <td class="py-3 px-3 text-center">${st.played}</td>
+                    <td class="py-3 px-3 text-center">${st.wins}</td>
+                    <td class="py-3 px-3 text-center font-bold text-emerald-400">${st.pts}</td>
+                </tr>
+            `).join('');
+
+            // Render Full Top Scorers
+            const scorers = getSortedScorers();
+            const scorersTbody = document.getElementById('full-top-scorers-tbody');
+            scorersTbody.innerHTML = scorers.map((sc, idx) => `
+                <tr class="${sc.isUser ? 'bg-emerald-950/80 font-bold text-emerald-300' : 'text-gray-300'}">
+                    <td class="py-3 px-3 font-bold ${idx === 0 ? 'text-amber-400' : ''}">${idx === 0 ? '👑 1º' : (idx + 1) + 'º'}</td>
+                    <td class="py-3 px-3 font-semibold">${sc.name}</td>
+                    <td class="py-3 px-3 text-gray-400">${getClub(sc.clubId).name}</td>
+                    <td class="py-3 px-3 text-center font-bold text-emerald-400 text-base">${sc.goals} Gols</td>
+                </tr>
+            `).join('');
+
+            // Render Full Top Assists
+            const assists = getSortedAssists();
+            const assistsTbody = document.getElementById('full-top-assists-tbody');
+            assistsTbody.innerHTML = assists.map((ast, idx) => `
+                <tr class="${ast.isUser ? 'bg-blue-950/80 font-bold text-blue-300' : 'text-gray-300'}">
+                    <td class="py-3 px-3 font-bold ${idx === 0 ? 'text-amber-400' : ''}">${idx === 0 ? '🪄 1º' : (idx + 1) + 'º'}</td>
+                    <td class="py-3 px-3 font-semibold">${ast.name}</td>
+                    <td class="py-3 px-3 text-gray-400">${getClub(ast.clubId).name}</td>
+                    <td class="py-3 px-3 text-center font-bold text-blue-400 text-base">${ast.assists} Passes</td>
                 </tr>
             `).join('');
         }
@@ -1125,7 +1355,6 @@
 
             document.getElementById('match-log').innerHTML = '<p class="text-gray-500 italic">Clique em "Iniciar Partida" para dar a saída...</p>';
 
-            // Reset match local state
             currentMatch = {
                 active: false,
                 minute: 0,
@@ -1153,7 +1382,7 @@
 
         function startMatchSimulation() {
             if (player.energy < 15) {
-                showModal("Atleta Exausto!", "Você está com menos de 15% de energia! Vá até a aba 'Treino' para descansar antes da partida.");
+                showModal("Atleta Exausto!", "Você está com menos de 15% de energia! Vá até a aba 'Treino' para descansar antes de jogar.");
                 return;
             }
 
@@ -1166,7 +1395,6 @@
 
             logMatchEvent("0'", "🔔 O juiz apita e começa o jogo!", "text-yellow-400 font-bold");
 
-            // Match loop every 1.2s
             currentMatch.timer = setInterval(tickMatch, 1200);
         }
 
@@ -1183,18 +1411,16 @@
 
             document.getElementById('match-minute').innerText = `${currentMatch.minute}'`;
 
-            // Random opportunity trigger for interactive player prompt
             const rand = Math.random();
             if (rand > 0.65) {
                 pauseForInteractiveMoment();
             } else if (rand < 0.2) {
-                // Opponent scores or generic match action
                 if (Math.random() > 0.5) {
                     currentMatch.awayScore++;
                     document.getElementById('match-away-score').innerText = currentMatch.awayScore;
                     logMatchEvent(`${currentMatch.minute}'`, `⚽ Gol do ${currentMatch.opponent.name}! Ataque bem trabalhado.`, "text-red-400");
                 } else {
-                    logMatchEvent(`${currentMatch.minute}'`, `🛡️ Boa recuperação defensiva da sua equipe no meio campo.`);
+                    logMatchEvent(`${currentMatch.minute}'`, `🛡️ Boa recuperação defensiva da sua equipe.`);
                 }
             }
         }
@@ -1256,7 +1482,6 @@
             const roll = Math.floor(Math.random() * 100);
 
             if (roll < statVal) {
-                // Success
                 if (action === 'shoot') {
                     AudioEngine.playCheer();
                     currentMatch.goals++;
@@ -1264,37 +1489,34 @@
                     currentMatch.homeScore++;
                     currentMatch.rating += 1.2;
                     document.getElementById('match-home-score').innerText = currentMatch.homeScore;
-                    logMatchEvent(`${currentMatch.minute}'`, `GOOOOOOL! ⚽ Que golaço de ${player.name}! Finalização perfeita!`, "text-emerald-400 font-bold");
+                    logMatchEvent(`${currentMatch.minute}'`, `GOOOOOOL! ⚽ Que golaço de ${player.name}!`, "text-emerald-400 font-bold");
                 } else if (action === 'pass') {
                     currentMatch.assists++;
                     currentMatch.passes++;
                     currentMatch.homeScore++;
                     currentMatch.rating += 0.8;
                     document.getElementById('match-home-score').innerText = currentMatch.homeScore;
-                    logMatchEvent(`${currentMatch.minute}'`, `🎯 Assistência espetacular de ${player.name}! Gol do seu time!`, "text-blue-400 font-bold");
+                    logMatchEvent(`${currentMatch.minute}'`, `🎯 Passe açucarado de ${player.name}! Gol do time!`, "text-blue-400 font-bold");
                 } else {
                     currentMatch.rating += 0.5;
-                    logMatchEvent(`${currentMatch.minute}'`, `🔥 Drible desconcertante de ${player.name}! Levantou a torcida!`, "text-amber-400");
+                    logMatchEvent(`${currentMatch.minute}'`, `🔥 Drible sensacional de ${player.name}! Levantou a torcida!`, "text-amber-400");
                 }
             } else {
-                // Fail
                 if (action === 'shoot') {
                     currentMatch.shots++;
-                    logMatchEvent(`${currentMatch.minute}'`, `❌ Chute de ${player.name} vai pra fora! Perdeu uma grande chance.`);
+                    logMatchEvent(`${currentMatch.minute}'`, `❌ Chute de ${player.name} vai pra fora!`);
                 } else {
                     logMatchEvent(`${currentMatch.minute}'`, `⚠️ A zaga interceptou a jogada de ${player.name}.`);
                 }
                 currentMatch.rating = Math.max(5.0, currentMatch.rating - 0.2);
             }
 
-            // Update local match stats UI
             document.getElementById('m-stat-goals').innerText = currentMatch.goals;
             document.getElementById('m-stat-assists').innerText = currentMatch.assists;
             document.getElementById('m-stat-shots').innerText = currentMatch.shots;
             document.getElementById('m-stat-passes').innerText = currentMatch.passes;
             document.getElementById('match-rating').innerText = `Nota: ${currentMatch.rating.toFixed(1)}`;
 
-            // Resume match loop
             currentMatch.timer = setInterval(tickMatch, 1200);
         }
 
@@ -1325,7 +1547,6 @@
 
             logMatchEvent("90'", "🏁 Fim de jogo!", "text-yellow-400 font-bold");
 
-            // Consume energy
             player.energy = Math.max(10, player.energy - 25);
             updateUI();
         }
@@ -1333,19 +1554,21 @@
         function finishMatch() {
             AudioEngine.playClick();
 
-            // Record match stats into career
             player.careerTotals.matches++;
             player.careerTotals.goals += currentMatch.goals;
             player.careerTotals.assists += currentMatch.assists;
 
-            // Goal Bonus
-            const bonusMoney = (currentMatch.goals * 200) + (currentMatch.assists * 100);
+            player.seasonGoals = (player.seasonGoals || 0) + currentMatch.goals;
+            player.seasonAssists = (player.seasonAssists || 0) + currentMatch.assists;
+
+            simulateNpcRoundStats();
+
+            const bonusMoney = (currentMatch.goals * 250) + (currentMatch.assists * 150);
             const totalEarned = player.weeklyWage + bonusMoney;
 
             player.money += totalEarned;
             player.careerTotals.totalEarnings += totalEarned;
 
-            // Update standings
             const myTeamStanding = player.standings.find(s => s.id === player.clubId);
             if (myTeamStanding) {
                 myTeamStanding.played++;
@@ -1357,18 +1580,17 @@
                 }
             }
 
-            // Increment Season round
             const div = getDivision(player.division);
             player.seasonMatchIndex++;
 
-            // End of season check
             if (player.seasonMatchIndex > div.maxGames) {
                 advanceSeason();
             } else {
-                showModal("Fim da Rodada!", `Você recebeu seu salário de <b>R$ ${player.weeklyWage}</b> + Bônus de <b>R$ ${bonusMoney}</b>!<br>Nota no jogo: <b>${currentMatch.rating.toFixed(1)}</b>`);
+                showModal("Fim da Rodada! (Auto-Salvo 💾)", `Você recebeu seu salário de <b>R$ ${player.weeklyWage}</b> + Bônus de <b>R$ ${bonusMoney}</b>!<br>Nota no jogo: <b>${currentMatch.rating.toFixed(1)}</b><br><br>📊 Você tem <b>${player.seasonGoals} gols</b> e <b>${player.seasonAssists} assistências</b> na temporada.`);
                 checkTransferOffers();
             }
 
+            // AUTO SAVE IMMEDIATELY
             autoSaveGame();
             switchTab('dashboard');
         }
@@ -1426,8 +1648,9 @@
             calculateOverall();
             updateUI();
             renderTraining();
-            autoSaveGame();
 
+            // Auto-save progression
+            autoSaveGame();
             showToast(`Treino concluído! +${boostVal} em ${statKey.toUpperCase()}`);
         }
 
@@ -1440,8 +1663,7 @@
         }
 
         function checkTransferOffers() {
-            // Random chance to generate a contract offer based on player overall
-            if (Math.random() < 0.4 || player.transferOffers.length === 0) {
+            if (Math.random() < 0.45 || player.transferOffers.length === 0) {
                 const suitableClubs = CLUBS_DATABASE.filter(c => c.id !== player.clubId && Math.abs(c.ovr - player.ovr) <= 8);
 
                 if (suitableClubs.length > 0) {
@@ -1449,7 +1671,6 @@
                     const div = getDivision(randomClub.div);
                     const wageOffer = Math.round(div.wageMultiplier * 300 * (1 + (player.ovr - 50) * 0.05));
 
-                    // Check if already in offers
                     if (!player.transferOffers.some(o => o.club.id === randomClub.id)) {
                         player.transferOffers.push({
                             club: randomClub,
@@ -1514,6 +1735,7 @@
             player.transferOffers = [];
 
             generateLeagueStandings();
+            generateLeagueNpcStats();
             updateUI();
             autoSaveGame();
 
@@ -1601,26 +1823,38 @@
                 player.careerTotals.trophies.push(`Campeão da ${divName} (${player.year - 1})`);
             }
 
-            // World Cup Event every 4 years (e.g. 2026, 2030, 2034)
+            // Top Scorer Award
+            const topScorer = getSortedScorers()[0];
+            let awardMsg = "";
+            if (topScorer && topScorer.isUser) {
+                player.careerTotals.trophies.push(`👑 Artilheiro da ${getDivision(player.division).name} (${player.year - 1})`);
+                player.money += 15000;
+                awardMsg += `<br>🥇 <b>ARTILHEIRO DA LIGA!</b> Você venceu a Chuteira de Ouro com <b>${player.seasonGoals} gols</b> e ganhou um bônus de R$ 15.000!`;
+            }
+
+            // Reset season stats
+            player.seasonGoals = 0;
+            player.seasonAssists = 0;
+
             let wcMsg = "";
             if (player.year % 4 === 0) {
                 if (player.ovr >= 75) {
-                    // Call-up to World Cup!
                     const wcGoals = Math.floor(Math.random() * 4) + 1;
                     player.careerTotals.wcGoals += wcGoals;
                     player.careerTotals.goals += wcGoals;
                     player.careerTotals.trophies.push(`🏆 Campeão da Copa do Mundo (${player.year})`);
-                    wcMsg = `<br><br>🌟 <b>CONVOCAÇÃO PARA A COPA DO MUNDO!</b> Você representou seu país e marcou <b>${wcGoals} gols</b> no torneio, levantando a taça da Copa do Mundo!`;
+                    wcMsg = `<br><br>🌟 <b>CONVOCAÇÃO PARA A COPA DO MUNDO!</b> Você marcou <b>${wcGoals} gols</b> e ergueu a taça da Copa do Mundo!`;
                 } else {
-                    wcMsg = `<br><br>🌍 A Copa do Mundo aconteceu este ano, mas seu OVR (${player.ovr}) ainda não foi suficiente para ser convocado. Mantenha o foco!`;
+                    wcMsg = `<br><br>🌍 Aconteceu a Copa do Mundo, mas seu OVR (${player.ovr}) ainda não foi suficiente para a Seleção. Continue evoluindo!`;
                 }
             }
 
             generateLeagueStandings();
+            generateLeagueNpcStats();
             autoSaveGame();
 
             showModal(`Fim da Temporada ${player.year - 1}! 🎆`,
-                `Sua equipe terminou a temporada. ${trophyWon ? '🏆 <b>VOCÊ FOI CAMPEÃO!</b>' : ''} Você agora tem <b>${player.age} anos</b>.${wcMsg}`
+                `Sua equipe concluiu o campeonato. ${trophyWon ? '🏆 <b>VOCÊ FOI CAMPEÃO!</b>' : ''}${awardMsg} Você agora tem <b>${player.age} anos</b>.${wcMsg}`
             );
         }
 
@@ -1633,21 +1867,19 @@
             document.getElementById('c-stat-wc-goals').innerText = player.careerTotals.wcGoals;
             document.getElementById('c-stat-earnings').innerText = `R$ ${player.careerTotals.totalEarnings.toLocaleString('pt-BR')}`;
 
-            // Next World Cup calculation
             let nextWC = player.year;
             while (nextWC % 4 !== 0) nextWC++;
             document.getElementById('next-wc-year').innerText = nextWC;
 
             if (player.ovr >= 75) {
-                document.getElementById('national-team-status').innerHTML = `<span class="text-emerald-400 font-bold">🟢 CONVOCÁVEL!</span> Seu nível atual permite defender a Seleção na próxima Copa!`;
+                document.getElementById('national-team-status').innerHTML = `<span class="text-emerald-400 font-bold">🟢 CONVOCÁVEL!</span> Seu nível permite defender a Seleção na próxima Copa!`;
             } else {
                 document.getElementById('national-team-status').innerHTML = `Evolua seu OVR para 75+ para ser chamado para a Seleção Nacional.`;
             }
 
-            // Trophy Cabinet
             const trophyBox = document.getElementById('trophy-cabinet');
             if (player.careerTotals.trophies.length === 0) {
-                trophyBox.innerHTML = `<p class="text-xs text-gray-500 col-span-full italic">Nenhum troféu conquistado ainda. Seja campeão da liga ou vença a Copa!</p>`;
+                trophyBox.innerHTML = `<p class="text-xs text-gray-500 col-span-full italic">Nenhum troféu conquistado ainda. Seja campeão da liga ou artilheiro!</p>`;
             } else {
                 trophyBox.innerHTML = player.careerTotals.trophies.map(t => `
                     <div class="bg-gray-900 border border-yellow-500/30 p-3 rounded-xl text-center gold-border">
@@ -1682,8 +1914,10 @@
             document.getElementById('modal-overlay').classList.add('hidden');
         }
 
+        // Global functions exposure
         window.initCareer = initCareer;
         window.switchTab = switchTab;
+        window.switchLeagueSubTab = switchLeagueSubTab;
         window.startMatchSimulation = startMatchSimulation;
         window.fastForwardMatch = fastForwardMatch;
         window.finishMatch = finishMatch;
